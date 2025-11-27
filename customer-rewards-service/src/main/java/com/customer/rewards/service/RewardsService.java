@@ -1,5 +1,14 @@
 package com.customer.rewards.service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
+
 import com.customer.rewards.dto.RewardsResponseDto;
 import com.customer.rewards.dto.TransactionDto;
 import com.customer.rewards.exception.ResourceNotFoundException;
@@ -8,17 +17,8 @@ import com.customer.rewards.model.Transaction;
 import com.customer.rewards.repository.InMemoryCustomerRepository;
 import com.customer.rewards.repository.InMemoryTransactionRepository;
 import com.customer.rewards.util.RewardsCalculator;
-import lombok.RequiredArgsConstructor;
+
 import lombok.extern.slf4j.Slf4j;
-
-import org.springframework.stereotype.Service;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
-
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.*;
-import java.util.concurrent.CompletableFuture;
 
 @Service
 @Slf4j
@@ -39,36 +39,32 @@ public class RewardsService {
 		 Customer customer = customerRepo.findById(customerId)
 				 .orElseThrow(() -> new ResourceNotFoundException("Customer not found: " + customerId));
 		 
-		 List<Transaction> txs = transactionRepo.findByCustomerIdAndDateBetween(customerId, start, end);
+		 List<Transaction> transactions = transactionRepo.findByCustomerIdAndDateBetween(customerId, start, end);
 		 
-		 List<TransactionDto> txDtos = convertToTransactionDtos(txs);
+		 List<TransactionDto> transactionDtos = convertToTransactionDtos(transactions);
 		 
-		 int totalPoints = txDtos.stream().mapToInt(TransactionDto::getPoints).sum();
+		 int totalRewardPoints = transactionDtos.stream().mapToInt(TransactionDto::getRewardPoints).sum();
 
 		 return RewardsResponseDto.builder()
 				 .customerId(customer.getId())
 				 .customerName(customer.getName())
-				 .totalPoints(totalPoints)
-				 .transactions(txDtos)
+				 .totalRewardPoints(totalRewardPoints)
+				 .totalTransaction(transactionDtos.size())
+				 .monthlyRewardTransactions(transactionDtos)
 				 .build();
 	 }
     
 	 private List<TransactionDto> convertToTransactionDtos(List<Transaction> transactions) {
-		 List<TransactionDto> dtos = new ArrayList<>();
-
-		 for (Transaction tx : transactions) {
-			 int points = RewardsCalculator.calculatePoints(tx.getAmount());
-
-			 dtos.add(TransactionDto.builder()
-					 .id(tx.getId())
-					 .date(tx.getDate())
-					 .amount(tx.getAmount())
-					 .points(points)
-					 .build());
-		 }
-
-		 dtos.sort((a, b) -> b.getDate().compareTo(a.getDate()));
-		 return dtos;
+		 return transactions.stream()
+				 .map(transaction -> TransactionDto.builder()
+						 .id(transaction .getId())
+						 .year(transaction .getDate().getYear())
+						 .month(transaction .getDate().format(DateTimeFormatter.ofPattern("MMMM")))
+						 .amount(transaction .getAmount())
+						 .rewardPoints(RewardsCalculator.calculatePoints(transaction .getAmount()))
+						 .build())
+				 .sorted(Comparator.comparing(TransactionDto::getYear).reversed())
+				 .toList(); 
 	 }
 
 

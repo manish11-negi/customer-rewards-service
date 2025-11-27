@@ -1,15 +1,14 @@
 package com.customer.rewards.service;
 
+import java.time.LocalDate;
+
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
+
 import com.customer.rewards.model.Customer;
 import com.customer.rewards.model.Transaction;
 import com.customer.rewards.repository.InMemoryCustomerRepository;
 import com.customer.rewards.repository.InMemoryTransactionRepository;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.stereotype.Component;
-
-import java.time.LocalDate;
 
 @Component
 public class DataInitializer implements CommandLineRunner {

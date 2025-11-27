@@ -1,12 +1,16 @@
 package com.customer.rewards.repository;
 
-import com.customer.rewards.model.Transaction;
-import org.springframework.stereotype.Repository;
-
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Repository;
+
+import com.customer.rewards.model.Transaction;
 
 @Repository
 public class InMemoryTransactionRepository {

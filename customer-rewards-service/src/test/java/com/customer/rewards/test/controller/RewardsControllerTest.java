@@ -2,6 +2,12 @@ package com.customer.rewards.test.controller;
 
 
 import static org.mockito.ArgumentMatchers.eq;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.time.LocalDate;
+import java.util.concurrent.CompletableFuture;
+
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,10 +15,7 @@ import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import java.time.LocalDate;
-import java.util.concurrent.CompletableFuture;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+
 import com.customer.rewards.controller.RewardsController;
 import com.customer.rewards.dto.RewardsResponseDto;
 import com.customer.rewards.service.RewardsService;

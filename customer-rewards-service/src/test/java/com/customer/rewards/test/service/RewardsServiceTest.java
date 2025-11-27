@@ -1,14 +1,16 @@
 package com.customer.rewards.test.service;
 
-import com.customer.rewards.dto.RewardsResponseDto;
-import com.customer.rewards.exception.ResourceNotFoundException;
-import com.customer.rewards.model.Customer;
-import com.customer.rewards.model.Transaction;
-import com.customer.rewards.repository.InMemoryCustomerRepository;
-import com.customer.rewards.repository.InMemoryTransactionRepository;
-import com.customer.rewards.service.RewardsService;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.when;
 
-import org.junit.jupiter.api.BeforeEach;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -16,14 +18,13 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.when;
+import com.customer.rewards.dto.RewardsResponseDto;
+import com.customer.rewards.exception.ResourceNotFoundException;
+import com.customer.rewards.model.Customer;
+import com.customer.rewards.model.Transaction;
+import com.customer.rewards.repository.InMemoryCustomerRepository;
+import com.customer.rewards.repository.InMemoryTransactionRepository;
+import com.customer.rewards.service.RewardsService;
 
 @ExtendWith(MockitoExtension.class)
 public class RewardsServiceTest {
@@ -55,8 +56,8 @@ public class RewardsServiceTest {
         assertNotNull(response);
         assertEquals(1, response.getCustomerId());
         assertEquals("John Doe", response.getCustomerName());
-        assertEquals(2, response.getTransactions().size());
-        assertEquals(120, response.getTotalPoints());
+        assertEquals(2, response.getMonthlyRewardTransactions().size());
+        assertEquals(120, response.getTotalRewardPoints());
     }
 
     @Test

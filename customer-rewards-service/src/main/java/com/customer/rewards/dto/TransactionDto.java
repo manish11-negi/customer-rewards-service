@@ -6,15 +6,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
-
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class TransactionDto {
     private Long id;
-    private LocalDate date;
+    private int year;
+    private String month;
     private Double amount;
-    private Integer points;
+    private Integer rewardPoints;
 }
