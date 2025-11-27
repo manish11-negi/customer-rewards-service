@@ -12,6 +12,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 
 import java.time.LocalDate;
@@ -22,8 +24,12 @@ import java.util.concurrent.CompletableFuture;
 @Validated
 @Slf4j
 public class RewardsController {
-   @Autowired
+	
    RewardsService rewardsService;
+   
+   public RewardsController(RewardsService rewardsService) {
+       this.rewardsService = rewardsService;
+   }
 
     @GetMapping(value = "/{customerId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RewardsResponseDto> getRewards(
@@ -43,12 +49,13 @@ public class RewardsController {
     }
 
     @GetMapping("/{customerId}/async")
-    public CompletableFuture<ResponseEntity<RewardsResponseDto>> getRewardsAsync(
+    public ResponseEntity<RewardsResponseDto> getRewardsAsync(
             @PathVariable @Min(1) Integer customerId,
             @RequestParam(required = false) Integer months
     ) {
         log.info("Async request getRewardsAsync for customer {} months={}", customerId, months);
-        return rewardsService.getRewardsForCustomerAsync(customerId, months)
-                .thenApply(ResponseEntity::ok);
+        RewardsResponseDto responseDto=rewardsService.getRewardsForCustomerAsync(customerId, months).join();
+        return ResponseEntity.ok(responseDto);
+                
     }
 }

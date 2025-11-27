@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
@@ -23,52 +24,58 @@ import java.util.concurrent.CompletableFuture;
 @Slf4j
 public class RewardsService {
 	
-	@Autowired
     InMemoryCustomerRepository customerRepo;
-	@Autowired
     InMemoryTransactionRepository transactionRepo;
+	
+	 public RewardsService(InMemoryCustomerRepository customerRepository, InMemoryTransactionRepository transactionRepository) {
+	        this.customerRepo = customerRepository;
+	        this.transactionRepo = transactionRepository;
+	    }
 
-    public RewardsResponseDto getRewardsForCustomer(Integer customerId, LocalDate start, LocalDate end) {
-    	int total = 0;
-        log.info("Calculate rewards for customer {} from {} to {}", customerId, start, end);
-        Customer customer = customerRepo.findById(customerId)
-                .orElseThrow(() -> new ResourceNotFoundException("Customer not found: " + customerId));
-        List<Transaction> txs = transactionRepo.findByCustomerIdAndDateBetween(customerId, start, end);
+	 public RewardsResponseDto getRewardsForCustomer(Integer customerId, LocalDate start, LocalDate end) {
 
-        Map<String, Integer> monthlyPoints = new TreeMap<>();
-      
-        List<TransactionDto> txDtos = new ArrayList<>();
+		 log.info("Calculate rewards for customer {} from {} to {}", customerId, start, end);
+		 
+		 Customer customer = customerRepo.findById(customerId)
+				 .orElseThrow(() -> new ResourceNotFoundException("Customer not found: " + customerId));
+		 
+		 List<Transaction> txs = transactionRepo.findByCustomerIdAndDateBetween(customerId, start, end);
+		 
+		 List<TransactionDto> txDtos = convertToTransactionDtos(txs);
+		 
+		 int totalPoints = txDtos.stream().mapToInt(TransactionDto::getPoints).sum();
 
-        for (Transaction tx : txs) {
-            int points = RewardsCalculator.calculatePoints(tx.getAmount());
-            total += points;
-            String month = tx.getDate().getMonth().toString();
-            monthlyPoints.put(month, monthlyPoints.getOrDefault(month, 0) + points);
-            txDtos.add(TransactionDto.builder()
-                    .id(tx.getId())
-                    .date(tx.getDate())
-                    .amount(tx.getAmount())
-                    .points(points)
-                    .build());
-        }
+		 return RewardsResponseDto.builder()
+				 .customerId(customer.getId())
+				 .customerName(customer.getName())
+				 .totalPoints(totalPoints)
+				 .transactions(txDtos)
+				 .build();
+	 }
+    
+	 private List<TransactionDto> convertToTransactionDtos(List<Transaction> transactions) {
+		 List<TransactionDto> dtos = new ArrayList<>();
 
-        txDtos.sort((o1, o2) -> o2.getDate().compareTo(o1.getDate()));
+		 for (Transaction tx : transactions) {
+			 int points = RewardsCalculator.calculatePoints(tx.getAmount());
 
-        RewardsResponseDto resp = RewardsResponseDto.builder()
-                .customerId(customer.getId())
-                .customerName(customer.getName())
-                .monthlyPoints(monthlyPoints)
-                .totalPoints(total)
-                .transactions(txDtos)
-                .build();
+			 dtos.add(TransactionDto.builder()
+					 .id(tx.getId())
+					 .date(tx.getDate())
+					 .amount(tx.getAmount())
+					 .points(points)
+					 .build());
+		 }
 
-        log.debug("Total points {} for customer {}", total, customerId);
-        return resp;
-    }
+		 dtos.sort((a, b) -> b.getDate().compareTo(a.getDate()));
+		 return dtos;
+	 }
+
 
     public RewardsResponseDto getRewardsForCustomerWithMonths(Integer customerId, Integer months) {
-        if (months == null)
-        months = 3;
+        if (months == null) {
+        	months = 3;
+        }
         LocalDate end = LocalDate.now();
         LocalDate start = end.minusMonths(months);
         return getRewardsForCustomer(customerId, start, end);

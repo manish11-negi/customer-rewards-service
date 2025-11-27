@@ -18,7 +18,6 @@ import java.util.Map;
 public class RewardsResponseDto {
     private Integer customerId;
     private String customerName;
-    private Map<String, Integer> monthlyPoints;
     private Integer totalPoints;
     private List<TransactionDto> transactions;
 }

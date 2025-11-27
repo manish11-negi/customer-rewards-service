@@ -14,10 +14,13 @@ import java.time.LocalDate;
 @Component
 public class DataInitializer implements CommandLineRunner {
 
-	@Autowired
     InMemoryCustomerRepository customerRepo;
-	@Autowired
     InMemoryTransactionRepository transactionRepo;
+	
+	 public DataInitializer(InMemoryCustomerRepository customerRepository, InMemoryTransactionRepository transactionRepository) {
+	        this.customerRepo = customerRepository;
+	        this.transactionRepo = transactionRepository;
+	    }
 
     @Override
     public void run(String... args) {
