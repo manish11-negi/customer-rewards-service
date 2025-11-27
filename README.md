@@ -59,7 +59,7 @@ Get :   /api/rewards/customer/{customerId}?start=YYYY-MM-DD&end=YYYY-MM-DD
 ******************************************************************************************************
 example:
 
-curl --location --request GET 'http://localhost:8080/api/rewards/3/async?end=2025-11-30&start=2025-10-01'
+curl --location --request GET 'http://localhost:8080/api/rewards/3?end=2025-11-30&start=2025-10-01'
 
 ******************************************************************************************************
 //Sample Response
@@ -67,10 +67,6 @@ curl --location --request GET 'http://localhost:8080/api/rewards/3/async?end=202
 {
     "customerId": 3,
     "customerName": "Bob Johnson",
-    "monthlyPoints": {
-        "NOVEMBER": 90,
-        "OCTOBER": 30
-    },
     "totalPoints": 120,
     "transactions": [
         {
@@ -101,10 +97,6 @@ curl --location --request GET 'http://localhost:8080/api/rewards/3/async'
 {
     "customerId": 3,
     "customerName": "Bob Johnson",
-    "monthlyPoints": {
-        "NOVEMBER": 90,
-        "OCTOBER": 30
-    },
     "totalPoints": 120,
     "transactions": [
         {
