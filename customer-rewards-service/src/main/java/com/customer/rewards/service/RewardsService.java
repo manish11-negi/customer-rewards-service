@@ -24,22 +24,22 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class RewardsService {
 	
-    InMemoryCustomerRepository customerRepo;
-    InMemoryTransactionRepository transactionRepo;
+    private final InMemoryCustomerRepository customerRepository;
+    private final InMemoryTransactionRepository transactionRepository;
 	
 	 public RewardsService(InMemoryCustomerRepository customerRepository, InMemoryTransactionRepository transactionRepository) {
-	        this.customerRepo = customerRepository;
-	        this.transactionRepo = transactionRepository;
+	        this.customerRepository = customerRepository;
+	        this.transactionRepository = transactionRepository;
 	    }
 
 	 public RewardsResponseDto getRewardsForCustomer(Integer customerId, LocalDate start, LocalDate end) {
 
 		 log.info("Calculate rewards for customer {} from {} to {}", customerId, start, end);
 		 
-		 Customer customer = customerRepo.findById(customerId)
+		 Customer customer = customerRepository.findById(customerId)
 				 .orElseThrow(() -> new ResourceNotFoundException("Customer not found: " + customerId));
 		 
-		 List<Transaction> transactions = transactionRepo.findByCustomerIdAndDateBetween(customerId, start, end);
+		 List<Transaction> transactions = transactionRepository.findByCustomerIdAndDateBetween(customerId, start, end);
 		 
 		 List<TransactionDto> transactionDtos = convertToTransactionDtos(transactions);
 		 
@@ -49,7 +49,7 @@ public class RewardsService {
 				 .customerId(customer.getId())
 				 .customerName(customer.getName())
 				 .totalRewardPoints(totalRewardPoints)
-				 .totalTransaction(transactionDtos.size())
+				 .totalTransactions(transactionDtos.size())
 				 .monthlyRewardTransactions(transactionDtos)
 				 .build();
 	 }

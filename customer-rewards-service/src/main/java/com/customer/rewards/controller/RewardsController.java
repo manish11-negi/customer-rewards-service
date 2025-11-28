@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.customer.rewards.dto.RewardsResponseDto;
 import com.customer.rewards.service.RewardsService;
+
 import jakarta.validation.constraints.Min;
 import lombok.extern.slf4j.Slf4j;
 
@@ -21,7 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class RewardsController {
 	
-   RewardsService rewardsService;
+   private final RewardsService rewardsService;
    
    public RewardsController(RewardsService rewardsService) {
        this.rewardsService = rewardsService;

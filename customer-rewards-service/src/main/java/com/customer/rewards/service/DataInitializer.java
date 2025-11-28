@@ -13,8 +13,8 @@ import com.customer.rewards.repository.InMemoryTransactionRepository;
 @Component
 public class DataInitializer implements CommandLineRunner {
 
-    InMemoryCustomerRepository customerRepo;
-    InMemoryTransactionRepository transactionRepo;
+    private final InMemoryCustomerRepository customerRepo;
+    private final InMemoryTransactionRepository transactionRepo;
 	
 	 public DataInitializer(InMemoryCustomerRepository customerRepository, InMemoryTransactionRepository transactionRepository) {
 	        this.customerRepo = customerRepository;
