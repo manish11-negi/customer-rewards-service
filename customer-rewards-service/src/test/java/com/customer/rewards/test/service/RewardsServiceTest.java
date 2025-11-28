@@ -32,9 +32,9 @@ public class RewardsServiceTest {
 	@InjectMocks
     private RewardsService rewardsService;
     @Mock
-    private InMemoryCustomerRepository customerRepo;
+    private InMemoryCustomerRepository customerRepository;
     @Mock
-    private InMemoryTransactionRepository transactionRepo;
+    private InMemoryTransactionRepository transactionRepository;
 
     @Test
     void testGetRewardsForCustomer_success() {
@@ -47,8 +47,8 @@ public class RewardsServiceTest {
         Transaction t1 = new Transaction(null, 1, 120.0, LocalDate.of(2024, 1, 5));
         Transaction t2 = new Transaction(null, 2, 80.0, LocalDate.of(2024, 1, 10));
 
-        when(customerRepo.findById(eq(customerId))).thenReturn(Optional.of(customer));
-        when(transactionRepo.findByCustomerIdAndDateBetween(eq(customerId), eq(start), eq(end)))
+        when(customerRepository.findById(eq(customerId))).thenReturn(Optional.of(customer));
+        when(transactionRepository.findByCustomerIdAndDateBetween(eq(customerId), eq(start), eq(end)))
                 .thenReturn(List.of(t1, t2));
 
         RewardsResponseDto response = rewardsService.getRewardsForCustomer(customerId, start, end);
@@ -62,7 +62,7 @@ public class RewardsServiceTest {
 
     @Test
     void testGetRewardsForCustomer_customerNotFound() {
-        when(customerRepo.findById(5)).thenReturn(Optional.empty());
+        when(customerRepository.findById(5)).thenReturn(Optional.empty());
 
         assertThrows(ResourceNotFoundException.class, () ->
                 rewardsService.getRewardsForCustomer(5, LocalDate.now(), LocalDate.now()));
@@ -72,10 +72,10 @@ public class RewardsServiceTest {
     void testGetRewardsForCustomerWithMonths_defaultMonths() {
         Integer customerId = 1;
 
-        when(customerRepo.findById(customerId))
+        when(customerRepository.findById(customerId))
                 .thenReturn(Optional.of(new Customer(1, "John")));
 
-        when(transactionRepo.findByCustomerIdAndDateBetween(Mockito.eq(customerId), Mockito.any(), Mockito.any()))
+        when(transactionRepository.findByCustomerIdAndDateBetween(Mockito.eq(customerId), Mockito.any(), Mockito.any()))
                 .thenReturn(List.of());
 
         RewardsResponseDto response = rewardsService.getRewardsForCustomerWithMonths(customerId, null);
@@ -88,10 +88,10 @@ public class RewardsServiceTest {
     void testGetRewardsForCustomerAsync() throws Exception {
         Integer customerId = 1;
 
-        when(customerRepo.findById(customerId))
+        when(customerRepository.findById(customerId))
                 .thenReturn(Optional.of(new Customer(1, "John")));
 
-        when(transactionRepo.findByCustomerIdAndDateBetween(Mockito.eq(customerId), Mockito.any(), Mockito.any()))
+        when(transactionRepository.findByCustomerIdAndDateBetween(Mockito.eq(customerId), Mockito.any(), Mockito.any()))
                 .thenReturn(List.of());
 
         CompletableFuture<RewardsResponseDto> future =
