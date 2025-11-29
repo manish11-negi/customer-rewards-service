@@ -59,11 +59,12 @@ public class RewardsService {
 				 .map(transaction -> TransactionDto.builder()
 						 .id(transaction .getId())
 						 .year(transaction .getDate().getYear())
-						 .month(transaction .getDate().format(DateTimeFormatter.ofPattern("MMMM")))
+						 .monthName(transaction .getDate().format(DateTimeFormatter.ofPattern("MMMM")))
+						 .month(transaction .getDate().getMonthValue())
 						 .amount(transaction .getAmount())
 						 .rewardPoints(RewardsCalculator.calculatePoints(transaction .getAmount()))
 						 .build())
-				 .sorted(Comparator.comparing(TransactionDto::getYear).reversed())
+				 .sorted(Comparator.comparing(TransactionDto::getYear).thenComparing(TransactionDto::getMonth).reversed())
 				 .toList(); 
 	 }
 
@@ -78,8 +79,8 @@ public class RewardsService {
     }
 
     @Async("taskExecutor")
-    public CompletableFuture<RewardsResponseDto> getRewardsForCustomerAsync(Integer customerId, Integer months) {
+    public RewardsResponseDto getRewardsForCustomerAsync(Integer customerId, Integer months) {
         RewardsResponseDto res = getRewardsForCustomerWithMonths(customerId, months);
-        return CompletableFuture.completedFuture(res);
+        return CompletableFuture.completedFuture(res).join();
     }
 }

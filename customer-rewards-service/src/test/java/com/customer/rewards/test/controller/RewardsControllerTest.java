@@ -6,7 +6,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.time.LocalDate;
-import java.util.concurrent.CompletableFuture;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -70,7 +69,7 @@ public class RewardsControllerTest {
 	        RewardsResponseDto mockResponse = new RewardsResponseDto();
 
 	        Mockito.when(rewardsService.getRewardsForCustomerAsync(eq(5), eq(2)))
-	                .thenReturn(CompletableFuture.completedFuture(mockResponse));
+	                .thenReturn(mockResponse);
 
 	        mockMvc.perform(get("/api/rewards/5/async")
 	                        .param("months", "2")

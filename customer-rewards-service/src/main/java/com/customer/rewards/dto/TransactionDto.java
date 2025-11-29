@@ -12,7 +12,8 @@ import lombok.NoArgsConstructor;
 public class TransactionDto {
     private Long id;
     private int year;
-    private String month;
+    private int month;
+    private String monthName;
     private Double amount;
     private Integer rewardPoints;
 }

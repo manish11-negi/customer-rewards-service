@@ -52,7 +52,7 @@ public class RewardsController {
             @RequestParam(required = false) Integer months
     ) {
         log.info("Async request getRewardsAsync for customer {} months={}", customerId, months);
-        RewardsResponseDto responseDto=rewardsService.getRewardsForCustomerAsync(customerId, months).join();
+        RewardsResponseDto responseDto=rewardsService.getRewardsForCustomerAsync(customerId, months);
         return ResponseEntity.ok(responseDto);
                 
     }

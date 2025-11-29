@@ -9,7 +9,6 @@ import static org.mockito.Mockito.when;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -94,10 +93,10 @@ public class RewardsServiceTest {
         when(transactionRepository.findByCustomerIdAndDateBetween(Mockito.eq(customerId), Mockito.any(), Mockito.any()))
                 .thenReturn(List.of());
 
-        CompletableFuture<RewardsResponseDto> future =
+        RewardsResponseDto future =
                 rewardsService.getRewardsForCustomerAsync(customerId, 2);
 
-        RewardsResponseDto resp = future.get();
+        RewardsResponseDto resp = future;
 
         assertNotNull(resp);
         assertEquals(1, resp.getCustomerId());
