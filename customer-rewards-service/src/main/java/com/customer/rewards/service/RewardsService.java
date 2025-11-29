@@ -4,9 +4,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import com.customer.rewards.dto.RewardsResponseDto;
@@ -78,9 +76,7 @@ public class RewardsService {
         return getRewardsForCustomer(customerId, start, end);
     }
 
-    @Async("taskExecutor")
     public RewardsResponseDto getRewardsForCustomerAsync(Integer customerId, Integer months) {
-        RewardsResponseDto res = getRewardsForCustomerWithMonths(customerId, months);
-        return CompletableFuture.completedFuture(res).join();
+    	return getRewardsForCustomerWithMonths(customerId, months);
     }
 }
