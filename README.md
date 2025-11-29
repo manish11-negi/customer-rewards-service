@@ -68,21 +68,23 @@ curl --location --request GET 'http://localhost:8080/api/rewards/3?end=2025-11-3
     "customerId": 3,
     "customerName": "Bob Johnson",
     "totalRewardPoints": 120,
-    "totalTransaction": 2,
+    "totalTransactions": 2,
     "monthlyRewardTransactions": [
-        {
-            "id": 8,
-            "year": 2025,
-            "month": "October",
-            "amount": 80.0,
-            "rewardPoints": 30
-        },
         {
             "id": 9,
             "year": 2025,
-            "month": "November",
+            "month": 11,
+            "monthName": "November",
             "amount": 120.0,
             "rewardPoints": 90
+        },
+        {
+            "id": 8,
+            "year": 2025,
+            "month": 10,
+            "monthName": "October",
+            "amount": 80.0,
+            "rewardPoints": 30
         }
     ]
 }
@@ -100,21 +102,23 @@ curl --location --request GET 'http://localhost:8080/api/rewards/3/async'
     "customerId": 3,
     "customerName": "Bob Johnson",
     "totalRewardPoints": 120,
-    "totalTransaction": 2,
+    "totalTransactions": 2,
     "monthlyRewardTransactions": [
-        {
-            "id": 8,
-            "year": 2025,
-            "month": "October",
-            "amount": 80.0,
-            "rewardPoints": 30
-        },
         {
             "id": 9,
             "year": 2025,
-            "month": "November",
+            "month": 11,
+            "monthName": "November",
             "amount": 120.0,
             "rewardPoints": 90
+        },
+        {
+            "id": 8,
+            "year": 2025,
+            "month": 10,
+            "monthName": "October",
+            "amount": 80.0,
+            "rewardPoints": 30
         }
     ]
 }
