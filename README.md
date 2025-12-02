@@ -26,7 +26,7 @@ The implementation follows clean code principles, proper error handling, test co
 ******************************************************************************************************
 //Tech Stack
 
-1)Java 8 coding.. version java 17
+1)Java 17 version
 
 2)Spring Boot
 
@@ -40,6 +40,7 @@ The implementation follows clean code principles, proper error handling, test co
 
 ******************************************************************************************************
 //Project Structure
+```
 src/main/java
  └── com.customer.rewards
       ├── controller
@@ -48,8 +49,7 @@ src/main/java
       ├── model
       ├── dto
       ├── exception
-      └── config
-
+```
 
 ******************************************************************************************************
 //URL
@@ -63,7 +63,7 @@ curl --location --request GET 'http://localhost:8080/api/rewards/3?end=2025-11-3
 
 ******************************************************************************************************
 //Sample Response
-
+```json
 {
     "customerId": 3,
     "customerName": "Bob Johnson",
@@ -88,6 +88,7 @@ curl --location --request GET 'http://localhost:8080/api/rewards/3?end=2025-11-3
         }
     ]
 }
+```
 ******************************************************************************************************
 2) URL
 
@@ -96,8 +97,9 @@ curl --location --request GET 'http://localhost:8080/api/rewards/3/async'
 
 ******************************************************************************************************
 
-2)Response API 
+2)Sample Response
 
+```json
 {
     "customerId": 3,
     "customerName": "Bob Johnson",
@@ -122,6 +124,6 @@ curl --location --request GET 'http://localhost:8080/api/rewards/3/async'
         }
     ]
 }
-
+```
 
 
