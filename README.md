@@ -1,42 +1,34 @@
 ******************************************************************************************************
-
-//Overview
-
-This project provides an API to calculate reward points for a given customer based on their transactions.
-The implementation follows clean code principles, proper error handling, test coverage, and scalable design.
+This project exposes REST APIs to calculate customer reward points based on their monthly transactions.
 
 ******************************************************************************************************
 
-//Features
+Features
 
-1)Calculate rewards for a customer for any given time range
+✔️ Calculate rewards for any customer
 
-2)Dynamic timeframe support (e.g., last 3 months, last 6 months, custom dates)
+✔️ Support for dynamic time ranges (last 3 months, 6 months, custom dates)
 
-3)Clean and modular Java 8 code
+✔️ Clean, modular Java 17 code
 
-4)Validation, exception handling & logging
+✔️ Proper validation, exceptions, and logging
 
-5)Unit test cases for multiple scenarios
+✔️ JUnit + Mockito test cases
 
-6)Asynchronous API call simulation
-
-7)Readable and consistent coding standards
+✔️ Readable and consistent coding standards
 
 ******************************************************************************************************
-//Tech Stack
+Tech Stack
 
-1)Java 17 version
+✔️ Java 17
 
-2)Spring Boot
+✔️ Spring Boot
 
-3)Spring Web
+✔️ Lombok
 
-4)Lombok
+✔️ JUnit / Mockito
 
-5)JUnit / Mockito
-
-6)In-Memory Repositories (as per assignment)
+✔️ In-Memory Repositories
 
 ******************************************************************************************************
 //Project Structure
@@ -52,15 +44,52 @@ src/main/java
 ```
 
 ******************************************************************************************************
-//URL
 
-Get :   /api/rewards/customer/{customerId}?start=YYYY-MM-DD&end=YYYY-MM-DD
+How to Run the Application
+=> Prerequisites
+
+✔️ JDK 17 installed
+
+✔️ Maven installed
+
+✔️ Any IDE (IntelliJ / Eclipse)
+
+1. Clone the project
+```
+git clone <your-repo-url>
+
+```
+
+2. Build the project
+```
+mvn clean install
+
+```
+3. Run the application
+```
+mvn spring-boot:run
+
+```
+Application starts on:
+```
+http://localhost:8080
+
+```
 
 ******************************************************************************************************
-example:
+✔️ API Endpoint
 
+GET:   
+```
+/api/rewards/customer/{customerId}?start=YYYY-MM-DD&end=YYYY-MM-DD
+
+```
+******************************************************************************************************
+Example request:
+```
 curl --location --request GET 'http://localhost:8080/api/rewards/3?end=2025-11-30&start=2025-10-01'
 
+```
 ******************************************************************************************************
 //Sample Response
 ```json
@@ -90,40 +119,5 @@ curl --location --request GET 'http://localhost:8080/api/rewards/3?end=2025-11-3
 }
 ```
 ******************************************************************************************************
-2) URL
-
-curl --location --request GET 'http://localhost:8080/api/rewards/3/async'
-
-
-******************************************************************************************************
-
-2)Sample Response
-
-```json
-{
-    "customerId": 3,
-    "customerName": "Bob Johnson",
-    "totalRewardPoints": 120,
-    "totalTransactions": 2,
-    "monthlyRewardTransactions": [
-        {
-            "id": 9,
-            "year": 2025,
-            "month": 11,
-            "monthName": "November",
-            "amount": 120.0,
-            "rewardPoints": 90
-        },
-        {
-            "id": 8,
-            "year": 2025,
-            "month": 10,
-            "monthName": "October",
-            "amount": 80.0,
-            "rewardPoints": 30
-        }
-    ]
-}
-```
 
 
