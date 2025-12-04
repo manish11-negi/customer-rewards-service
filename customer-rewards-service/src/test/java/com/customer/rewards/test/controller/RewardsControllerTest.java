@@ -63,18 +63,4 @@ public class RewardsControllerTest {
 	                .andExpect(status().is5xxServerError());
 	    }
 	    
-	    @Test
-	    void testGetRewardsAsync() throws Exception {
-
-	        RewardsResponseDto mockResponse = new RewardsResponseDto();
-
-	        Mockito.when(rewardsService.getRewardsForCustomerAsync(eq(5), eq(2)))
-	                .thenReturn(mockResponse);
-
-	        mockMvc.perform(get("/api/rewards/5/async")
-	                        .param("months", "2")
-	                        .accept(MediaType.APPLICATION_JSON))
-	                .andExpect(status().isOk());
-	    }
-
 }

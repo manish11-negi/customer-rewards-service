@@ -1,6 +1,7 @@
 package com.customer.rewards.service;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.List;
@@ -55,14 +56,18 @@ public class RewardsService {
 	 private List<TransactionDto> convertToTransactionDtos(List<Transaction> transactions) {
 		 return transactions.stream()
 				 .map(transaction -> TransactionDto.builder()
-						 .id(transaction .getId())
-						 .year(transaction .getDate().getYear())
-						 .monthName(transaction .getDate().format(DateTimeFormatter.ofPattern("MMMM")))
-						 .month(transaction .getDate().getMonthValue())
-						 .amount(transaction .getAmount())
-						 .rewardPoints(RewardsCalculator.calculatePoints(transaction .getAmount()))
+						 .id(transaction.getId())
+						 .year(transaction.getDate().getYear())
+						 .monthName(transaction.getDate().format(DateTimeFormatter.ofPattern("MMMM")))
+						 .month(transaction.getDate().getMonthValue())
+						 .amount(transaction.getAmount())
+						 .rewardPoints(RewardsCalculator.calculatePoints(transaction.getAmount()))
 						 .build())
-				 .sorted(Comparator.comparing(TransactionDto::getYear).thenComparing(TransactionDto::getMonth).reversed())
+				 .sorted(
+						 Comparator.comparing(TransactionDto::getYear).reversed()
+						 .thenComparing(Comparator.comparing(TransactionDto::getMonth).reversed())
+						 )
+
 				 .toList(); 
 	 }
 
@@ -71,12 +76,8 @@ public class RewardsService {
         if (months == null) {
         	months = 3;
         }
-        LocalDate end = LocalDate.now();
+        LocalDate end = LocalDate.now(ZoneId.systemDefault());
         LocalDate start = end.minusMonths(months);
         return getRewardsForCustomer(customerId, start, end);
-    }
-
-    public RewardsResponseDto getRewardsForCustomerAsync(Integer customerId, Integer months) {
-    	return getRewardsForCustomerWithMonths(customerId, months);
     }
 }

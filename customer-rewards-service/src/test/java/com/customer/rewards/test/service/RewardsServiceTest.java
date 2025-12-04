@@ -83,22 +83,4 @@ public class RewardsServiceTest {
         assertEquals(1, response.getCustomerId());
     }
 
-    @Test
-    void testGetRewardsForCustomerAsync() throws Exception {
-        Integer customerId = 1;
-
-        when(customerRepository.findById(customerId))
-                .thenReturn(Optional.of(new Customer(1, "John")));
-
-        when(transactionRepository.findByCustomerIdAndDateBetween(Mockito.eq(customerId), Mockito.any(), Mockito.any()))
-                .thenReturn(List.of());
-
-        RewardsResponseDto future =
-                rewardsService.getRewardsForCustomerAsync(customerId, 2);
-
-        RewardsResponseDto resp = future;
-
-        assertNotNull(resp);
-        assertEquals(1, resp.getCustomerId());
-    }
 }

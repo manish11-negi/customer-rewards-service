@@ -45,15 +45,4 @@ public class RewardsController {
         }
         return ResponseEntity.ok(resp);
     }
-
-    @GetMapping("/{customerId}/async")
-    public ResponseEntity<RewardsResponseDto> getRewardsAsync(
-            @PathVariable @Min(1) Integer customerId,
-            @RequestParam(required = false) Integer months
-    ) {
-        log.info("Async request getRewardsAsync for customer {} months={}", customerId, months);
-        RewardsResponseDto responseDto=rewardsService.getRewardsForCustomerAsync(customerId, months);
-        return ResponseEntity.ok(responseDto);
-                
-    }
 }
